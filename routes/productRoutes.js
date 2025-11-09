@@ -29,11 +29,17 @@ router.post("/", upload.fields([
 
 
         // Images
-        const images = req.files["images"] ? req.files["images"].map(f => f.filename) : [];
+        const images = req.files["images"]
+            ? req.files["images"].map(f => `https://productcatalog-3-m2rz.onrender.com/uploads/${f.filename}`)
+            : [];
+
 
 
         // Video
-        const video = req.files["video"] ? req.files["video"][0].filename : null;
+        const video = req.files["video"]
+            ? `https://productcatalog-3-m2rz.onrender.com/uploads/${req.files["video"][0].filename}`
+            : null;
+
 
 
         const newProduct = new Product({
