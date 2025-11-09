@@ -11,7 +11,12 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: '*', // allows all origins — good for testing
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: false
+}));
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // MongoDB connection
