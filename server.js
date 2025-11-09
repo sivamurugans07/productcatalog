@@ -11,14 +11,12 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-const cors = require("cors");
 
 app.use(cors({
     origin: ["https://productcatalogfrontend-10nx.onrender.com", "http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
-
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
