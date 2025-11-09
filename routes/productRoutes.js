@@ -62,19 +62,24 @@ router.get("/", async (req, res) => {
     try {
         const products = await Product.find();
 
+        const baseUrl = "https://productcatalog-3-m2rz.onrender.com"; // your backend URL
 
-        // Add uniform categoryName field
+        // Update image URLs
         const mappedProducts = products.map((p) => ({
             ...p._doc,
             categoryName: p.category || "Uncategorized",
+            images: p.images?.map(img =>
+                img.startsWith("http") ? img : `${baseUrl}/uploads/${img}`
+            ),
+            video: p.video ? `${baseUrl}/uploads/${p.video}` : null
         }));
-
 
         res.json(mappedProducts);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 
 // ---------------- Get products by category ----------------
@@ -97,11 +102,22 @@ router.get("/category/:categoryName", async (req, res) => {
 router.get("/featured", async (req, res) => {
     try {
         const products = await Product.find({ isFeatured: true });
-        res.json(products);
+        const baseUrl = "https://productcatalog-3-m2rz.onrender.com";
+
+        const mappedProducts = products.map((p) => ({
+            ...p._doc,
+            images: p.images?.map(img =>
+                img.startsWith("http") ? img : `${baseUrl}/uploads/${img}`
+            ),
+            video: p.video ? `${baseUrl}/uploads/${p.video}` : null
+        }));
+
+        res.json(mappedProducts);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 
 // ---------------- Get single product by ID ----------------
